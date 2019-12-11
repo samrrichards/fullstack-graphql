@@ -10,21 +10,25 @@ module.exports = {
     },
     pet(_, { input }, ctx) {
       return ctx.models.Pet.findOne(input);
+    },
+    user(_, __, ctx) {
+      return ctx.models.User.findOne();
     }
   },
   Mutation: {
     pet(_, { input }, ctx) {
       return ctx.models.Pet.create(input);
     }
+  },
+  Pet: {
+    user(pet, _, ctx) {
+      return ctx.models.User.findOne();
+    }
+  },
+  User: {
+    pets(user, _, ctx) {
+      const { id } = user;
+      return ctx.models.Pet.findMany({ user: id });
+    }
   }
-  // Pet: {
-  //   img(pet) {
-  //     return pet.type === 'DOG'
-  //       ? 'https://placedog.net/300/300'
-  //       : 'http://placekitten.com/300/300'
-  //   }
-  // },
-  // User: {
-  //
-  // }
 };
